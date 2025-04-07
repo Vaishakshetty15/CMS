@@ -25,7 +25,15 @@ const ComplaintSchema = new mongoose.Schema({
     default: 'low' 
   },
   resolutionNotes: String,
+  // Escalation-related fields
   escalationLevel: { type: Number, default: 0 },
+  deadline: { type: Date },
+  escalationHistory: [{
+    escalatedAt: { type: Date, default: Date.now },
+    escalatedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    level: Number
+  }],
+  // Timestamps
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

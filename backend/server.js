@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use('/uploads', express.static('backend/uploads'));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/complaints', complaintRoutes);
 
 const PORT = process.env.PORT || 5000;
