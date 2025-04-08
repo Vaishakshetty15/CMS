@@ -3,6 +3,8 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const Complaint = require('../models/Complaint');
 const upload = require('../middleware/upload');
+const User = require('../models/User'); // ✅ Added this
+const { sendAssignmentEmail } = require('../services/emailService'); // ✅ Added this
 
 // 1. Create Complaint (with file upload)
 router.post('/', auth, upload.array('attachments', 5), async (req, res) => {
@@ -66,6 +68,10 @@ router.put('/:id/assign', auth, async (req, res) => {
     if (!complaint) {
       return res.status(404).json({ error: 'Complaint not found' });
     }
+
+    // ✅ Send assignment email after assigning
+    const assignedAdmin = await User.findById(req.body.adminId);
+    await sendAssignmentEmail(assignedAdmin.email, complaint._id);
 
     res.json(complaint);
   } catch (err) {
